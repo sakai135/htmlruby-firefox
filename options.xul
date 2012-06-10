@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE mydialog SYSTEM "chrome://myaddon/locale/mydialog.dtd">
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<setting type="bool" pref="extensions.HTMLRuby.adjustLineHeight" title="Adjust line height" />
+	<setting type="bool" pref="extensions.HTMLRuby.spaceRubyText" title="Space ruby text" />
+	<setting type="bool" pref="extensions.HTMLRuby.processInsertedContent" title="Process inserted content" />
+	<setting type="string" pref="extensions.HTMLRuby.rubyLineHeight" title="Adjust line height" />
+	<setting type="string" pref="extensions.HTMLRuby.rubyTextSize" title="Ruby text size" />
+</vbox>
