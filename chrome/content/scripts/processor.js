@@ -245,7 +245,7 @@ var getProcessor = function(param) {
 	
 	// constructor code
 	(function() {
-		if (typeof body === 'undefined' || (window.location.protocol != 'http:' && window.location.protocol != 'https:' && window.location.protocol != 'file:')) {
+		if (typeof body === 'undefined' || (window.location.protocol !== 'http:' && window.location.protocol !== 'https:' && window.location.protocol !== 'file:')) {
 			return;
 		}
 		if (!body.querySelector('ruby') || (!body.querySelector('ruby ruby') && !body.querySelector('rt rp') && !body.querySelector('rp rt'))) {
