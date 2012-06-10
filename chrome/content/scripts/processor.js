@@ -10,6 +10,7 @@ var getProcessor = function(param) {
 		queue = [],
 		timeout,
 		mystatus,
+		timeoutDynamic,
 		
 		// private functions
 		flush = function() {
@@ -33,6 +34,11 @@ var getProcessor = function(param) {
 				onresume();
 			} else if (queue.length > 0) {
 				timeout = window.setTimeout(space, 100);
+			} else {
+				if (Preferences.processInsertedContent) {
+					window.clearTimeout(timeoutDynamic);
+					timeoutDynamic = window.setTimeout(flush, 2000);
+				}
 			}
 		},
 		run = function(rubies) {
@@ -151,9 +157,6 @@ var getProcessor = function(param) {
 				count = block.length,
 				i = count, j, data,
 				rbWidths, rtWidths, rbs, rts, rbCount, rb, rt, rbWidth, rtWidth, diff;
-			if (!count) {
-				return;
-			}
 			for (; i--; ) {
 				data = block[i];
 				if (data) {
@@ -198,15 +201,10 @@ var getProcessor = function(param) {
 			mystatus.update(count);
 			onresume();
 		},
-		oninsert = function() {
-			log('processor.oninsert()');
-			window.clearTimeout(timeout);
-			timeout = window.setTimeout(flush, 100);
-		},
 		onpause = function() {
 			log('processor.onpause()');
 			window.clearTimeout(timeout);
-			body.removeEventListener('DOMNodeInserted', oninsert, true);
+			window.clearTimeout(timeoutDynamic);
 		},
 		onunload = function() {
 			log('processor.onunload()');
@@ -214,8 +212,8 @@ var getProcessor = function(param) {
 				mystatus.close();
 			}
 			window.clearTimeout(timeout);
+			window.clearTimeout(timeoutDynamic);
 			window.removeEventListener('pagehide', onunload, false);
-			body.removeEventListener('DOMNodeInserted', oninsert, true);
 			
 			mystatus = undefined;
 			body = undefined;
@@ -227,9 +225,10 @@ var getProcessor = function(param) {
 		onresume = function() {
 			log('processor.onresume()');
 			if (Preferences.processInsertedContent) {
-				body.addEventListener('DOMNodeInserted', oninsert, true);
+				window.clearTimeout(timeoutDynamic);
+				timeoutDynamic = window.setTimeout(flush, 2000);
 			}
-			if (Preferences.spaceRubyText) {
+			if (Preferences.spaceRubyText && queue.length > 0) {
 				timeout = window.setTimeout(space, 100);
 			}
 		},
@@ -245,7 +244,10 @@ var getProcessor = function(param) {
 	that.resume = onresume;
 	
 	// constructor code
-	(function() {	
+	(function() {
+		if (typeof body === 'undefined' || (window.location.protocol != 'http:' && window.location.protocol != 'https:' && window.location.protocol != 'file:')) {
+			return;
+		}
 		if (!body.querySelector('ruby') || (!body.querySelector('ruby ruby') && !body.querySelector('rt rp') && !body.querySelector('rp rt'))) {
 			flush();
 		} else {

@@ -34,7 +34,7 @@ var getNotification = function(param) {
 				timeout = window.setTimeout(function() {
 					if (processedTotal < total) {
 						log('statusbar - processor taking long time');
-						nProgress = nBox.appendNotification('', 'htmlruby-notification-progress', getURI('images/statusbar.png'), 'PRIORITY_INFO_LOW', [
+						nProgress = nBox.appendNotification('', 'htmlruby-notification-progress', 'chrome://htmlruby/skin/icons/statusbar.png', 'PRIORITY_INFO_LOW', [
 							{
 								accessKey: 'A',
 								callback: onabort,

@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
-<!DOCTYPE mydialog SYSTEM "chrome://myaddon/locale/mydialog.dtd">
+﻿<?xml version="1.0"?>
+<!DOCTYPE mydialog SYSTEM "chrome://htmlruby/locale/options.ent">
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<setting type="bool" pref="extensions.HTMLRuby.adjustLineHeight" title="Adjust line height" />
-	<setting type="bool" pref="extensions.HTMLRuby.spaceRubyText" title="Space ruby text" />
-	<setting type="bool" pref="extensions.HTMLRuby.processInsertedContent" title="Process inserted content" />
-	<setting type="string" pref="extensions.HTMLRuby.rubyLineHeight" title="Adjust line height" />
-	<setting type="string" pref="extensions.HTMLRuby.rubyTextSize" title="Ruby text size" />
+	<setting type="bool" pref="extensions.HTMLRuby.adjustLineHeight" title="&adjustLineHeight.title;" desc="&adjustLineHeight.description; &adjustLineHeight.default;" />
+	<setting type="bool" pref="extensions.HTMLRuby.spaceRubyText" title="&spaceRubyText.title;" desc="&spaceRubyText.description; &spaceRubyText.default;" />
+	<setting type="bool" pref="extensions.HTMLRuby.processInsertedContent" title="&processInsertedContent.title;" desc="&processInsertedContent.description; &processInsertedContent.default;" />
+	<setting type="string" pref="extensions.HTMLRuby.rubyLineHeight" title="&rubyLineHeight.title;" desc="&rubyLineHeight.description; &rubyLineHeight.default;" />
+	<setting type="string" pref="extensions.HTMLRuby.rubyTextSize" title="&rubyTextSize.title;" desc="&rubyTextSize.description; &rubyTextSize.default;" />
 </vbox>

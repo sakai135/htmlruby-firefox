@@ -1,6 +1,6 @@
-
+const VERSION = '7.1.0-beta2';
 const PREFS_ROOT = 'extensions.HTMLRuby.';
-const DEBUG = false;
+const DEBUG = true;
 const Ci = Components.interfaces;
 const Cu = Components.utils;
 const Cc = Components.classes;
@@ -16,32 +16,14 @@ Cu.import("resource://gre/modules/PopupNotifications.jsm");
 	function getXMLHttpRequest() {
 		return Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
 	}
-	global.getURI = function(path) {
-		if (path.indexOf('.property') > -1) {
-			var locale = Services.prefs.getBranch('general.useragent.').getCharPref('locale'),
-				newPath = path + '.' + locale;
-			if (exists(newPath)) {
-				path = newPath;
-			} else {
-				newPath = path + '.' + locale.substring(0, 2);
-				if (exists(newPath)) {
-					path = newPath;
-				}
-			}
-			log('application locale is ' + locale + '; returning URI for "' + path + '"');
-		}
-		return addon.getResourceURI(path).spec;
-	};
 	global.exists = function(path) {
-		return addon.hasResource(path);
+		//return addon.hasResource(path);
+		return true;
 	};
-	global.include = function(path, scope) {
-		if (typeof scope === 'undefined') {
-			scope = global;
-		}
+	global.include = function(path) {
 		if (global.exists(path)) {
 			log('include(' + path + ')');
-			Services.scriptloader.loadSubScript(global.getURI(path), scope);
+			Services.scriptloader.loadSubScript(path, global, 'utf-8');
 		} else {
 			log('include() path [' + path + '] does not exist');
 		}
@@ -78,7 +60,7 @@ Cu.import("resource://gre/modules/PopupNotifications.jsm");
 	};
 	global.setString = function(path) {
 		log('loading stringbundle [' + path + ']');
-		literal = Services.strings.createBundle(getURI(path));
+		literal = Services.strings.createBundle(path);
 		shutdownQueue.push(function() {
 			Services.strings.flushBundles();
 		});
@@ -98,7 +80,7 @@ function install(data, reason) {
 	log('install start');
 	AddonManager.getAddonByID(data.id, function(addon) {
 		setAddon(addon);
-		include('scripts/bootstrap/install.js');
+		include('chrome://htmlruby/content/bootstrap/install.js');
 	});
 	log('install end');
 }
@@ -107,7 +89,7 @@ function startup(data, reason) {
 	log('startup start');	
 	AddonManager.getAddonByID(data.id, function(addon) {
 		setAddon(addon);
-		include('scripts/bootstrap/startup.js');
+		include('chrome://htmlruby/content/bootstrap/startup.js');
 	});
 	log('startup end');
 }
