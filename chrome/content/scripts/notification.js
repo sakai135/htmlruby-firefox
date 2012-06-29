@@ -55,7 +55,6 @@ var getNotification = function(param) {
 			if (typeof nProgress !== 'undefined' && nProgress !== null && nProgress.parentNode !== null) {
 				nProgress.close();
 			}
-			nProgress = undefined;
 		},
 		showProgress = function() {
 			log('notification.showProgress()');
@@ -82,15 +81,6 @@ var getNotification = function(param) {
 			if (typeof window !== 'undefined') {
 				window.removeEventListener('pagehide', onunload, false);
 			}
-			onabort = undefined;
-			document = undefined;
-			window = undefined;
-			browser = undefined;
-			total = undefined;
-			processedTotal = undefined;
-			timeout = undefined;
-			nBox = undefined;
-			nProgress = undefined;
 		};
 	
 	// public
