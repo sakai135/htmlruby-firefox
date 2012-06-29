@@ -214,13 +214,6 @@ var getProcessor = function(param) {
 			window.clearTimeout(timeout);
 			window.clearTimeout(timeoutDynamic);
 			window.removeEventListener('pagehide', onunload, false);
-			
-			mystatus = undefined;
-			body = undefined;
-			document = undefined;
-			window = undefined;
-			queue = undefined;
-			timeout = undefined;
 		},
 		onresume = function() {
 			log('processor.onresume()');

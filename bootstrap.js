@@ -1,6 +1,6 @@
 const VERSION = '7.1.0-beta2';
 const PREFS_ROOT = 'extensions.HTMLRuby.';
-const DEBUG = true;
+const DEBUG = false;
 const Ci = Components.interfaces;
 const Cu = Components.utils;
 const Cc = Components.classes;
@@ -12,21 +12,13 @@ Cu.import('resource://gre/modules/AddonManager.jsm');
 Cu.import("resource://gre/modules/PopupNotifications.jsm");
 
 (function(global) {
-	var addon, literal;
+	var literal;
 	function getXMLHttpRequest() {
 		return Cc["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Ci.nsIXMLHttpRequest);
 	}
-	global.exists = function(path) {
-		//return addon.hasResource(path);
-		return true;
-	};
 	global.include = function(path) {
-		if (global.exists(path)) {
-			log('include(' + path + ')');
-			Services.scriptloader.loadSubScript(path, global, 'utf-8');
-		} else {
-			log('include() path [' + path + '] does not exist');
-		}
+		log('include(' + path + ')');
+		Services.scriptloader.loadSubScript(path, global, 'utf-8');
 	};
 	global.read = function(path) {
 		var request = getXMLHttpRequest();
@@ -52,12 +44,6 @@ Cu.import("resource://gre/modules/PopupNotifications.jsm");
 			Services.console.logStringMessage('HTML Ruby: ' + message + ' [' + String(d.getTime()).substr(-6, 6) + ']');
 		}
 	};
-	global.setAddon = function(_addon) {
-		addon = _addon;
-	};
-	global.getAddon = function() {
-		return addon;
-	};
 	global.setString = function(path) {
 		log('loading stringbundle [' + path + ']');
 		literal = Services.strings.createBundle(path);
@@ -78,19 +64,12 @@ Cu.import("resource://gre/modules/PopupNotifications.jsm");
 
 function install(data, reason) {
 	log('install start');
-	AddonManager.getAddonByID(data.id, function(addon) {
-		setAddon(addon);
-		include('chrome://htmlruby/content/bootstrap/install.js');
-	});
 	log('install end');
 }
 
 function startup(data, reason) {
-	log('startup start');	
-	AddonManager.getAddonByID(data.id, function(addon) {
-		setAddon(addon);
-		include('chrome://htmlruby/content/bootstrap/startup.js');
-	});
+	log('startup start');
+	include('chrome://htmlruby/content/bootstrap/startup.js');
 	log('startup end');
 }
 

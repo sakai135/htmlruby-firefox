@@ -4,25 +4,15 @@ function initialize() {
 	log('startup - initialize() start');
 
 	setString('chrome://htmlruby/locale/strings.property');
-	delete localeAvailable;
-	delete locale;
 	
 	log('loading rubydata');
 	include('chrome://htmlruby/content/scripts/rubydata.js');
-	shutdownQueue.push(function() {
-		delete RubyData;
-	});
 	
 	log('loading notification');
 	include('chrome://htmlruby/content/scripts/notification.js');
-	shutdownQueue.push(function() {
-		delete getNotification;
-	});
 	
 	isInitialized = true;
-	shutdownQueue.push(function() {
-		delete isInitialized;
-	});
+
 	log('startup - initialize() end');
 }
 
@@ -47,7 +37,6 @@ include('chrome://htmlruby/content/scripts/processor.js');
 				shutdownQueue.push(function() {
 					log('shutdown - removing DOMContentLoaded from appcontent');
 					appcontent.removeEventListener('DOMContentLoaded', load2, false);
-					delete appcontent;
 				});
 			}
 		}
@@ -84,7 +73,6 @@ include('chrome://htmlruby/content/scripts/processor.js');
 	shutdownQueue.push(function() {
 		log('unloading ww observer');
 		Services.ww.unregisterNotification(observer);
-		delete observer;
 	});
 	
 	var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
@@ -94,13 +82,11 @@ include('chrome://htmlruby/content/scripts/processor.js');
 				log('delayed initialize');
 				initialize();
 			}
-			delete timer;
 		}
 	}, 10000, Ci.nsITimer.TYPE_ONE_SHOT);
 	shutdownQueue.push(function() {
 		if (typeof timer !== 'undefined') {
 			timer.cancel();
-			delete timer;
 		}
 	});
 	
@@ -113,8 +99,6 @@ include('chrome://htmlruby/content/scripts/processor.js');
 	shutdownQueue.push(function() {
 		log('unloading stylesheets');
 		sss.unregisterSheet(uri, sss.USER_SHEET);
-		delete sss;
-		delete uri;
 	});
 	
 	log('loading preferences');
@@ -124,6 +108,5 @@ include('chrome://htmlruby/content/scripts/processor.js');
 	shutdownQueue.push(function() {
 		log('unloading preferences');
 		Preferences.unregister();
-		delete Preferences;
 	});
 }());
