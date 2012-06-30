@@ -44,7 +44,7 @@ var getProcessor = function(param) {
 		run = function(rubies) {
 			log('processor.run()');
 			var count = rubies.length,
-				range, parent, fragment, toQueue;
+				range, parent, fragment;
 			if (count > 50) {
 				range = document.createRange();
 				range.setStartBefore(rubies[0]);

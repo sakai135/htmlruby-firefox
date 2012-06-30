@@ -21,7 +21,6 @@ include('chrome://htmlruby/content/scripts/processor.js');
 
 (function() {
 	function attach(window) {
-		var appcontent;
 		function load2(e) {
 			var doc = e.originalTarget;
 			if (typeof doc.body !== 'undefined') {
@@ -30,7 +29,7 @@ include('chrome://htmlruby/content/scripts/processor.js');
 			}
 		}
 		if (window.document.documentElement.getAttribute('windowtype') === 'navigator:browser') {
-			appcontent = window.document.getElementById('appcontent');
+			let appcontent = window.document.getElementById('appcontent');
 			if (typeof appcontent !== 'undefined' && appcontent !== null) {
 				log('startup - attaching DOMContentLoaded to each window\'s appcontent');
 				appcontent.addEventListener('DOMContentLoaded', load2, false);
@@ -41,26 +40,29 @@ include('chrome://htmlruby/content/scripts/processor.js');
 			}
 		}
 	}
-	var observer = {
-			observe: function(subject, topic, data) {
-				function load() {
-					attach(subject);
-					subject.removeEventListener('load', load, false);
-				}
-				subject.QueryInterface(Ci.nsIDOMWindow);
-				if (topic === 'domwindowopened') {
-					subject.addEventListener('load', load, false);
-				}
+	var observer, openWindows, timer, sss, uri;
+	
+	observer = {
+		observe: function(subject, topic, data) {
+			function load() {
+				attach(subject);
+				subject.removeEventListener('load', load, false);
 			}
-		},
-		openWindows = Services.wm.getEnumerator("navigator:browser");
+			subject.QueryInterface(Ci.nsIDOMWindow);
+			if (topic === 'domwindowopened') {
+				subject.addEventListener('load', load, false);
+			}
+		}
+	};
+	openWindows = Services.wm.getEnumerator("navigator:browser");
 	
 	while (openWindows.hasMoreElements()) {
-		let openWindow = openWindows.getNext(),
-			load = function() {
-				attach(openWindow);
-				openWindow.removeEventListener('load', load, false);
-			};
+		let openWindow, load;
+		openWindow = openWindows.getNext();
+		load = function() {
+			attach(openWindow);
+			openWindow.removeEventListener('load', load, false);
+		};
 		if (openWindow.document.readyState === 'complete') {
 			attach(openWindow);
 		} else {
@@ -75,7 +77,7 @@ include('chrome://htmlruby/content/scripts/processor.js');
 		Services.ww.unregisterNotification(observer);
 	});
 	
-	var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+	timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
 	timer.initWithCallback({
 		notify: function(t) {
 			if (!isInitialized) {
@@ -91,8 +93,8 @@ include('chrome://htmlruby/content/scripts/processor.js');
 	});
 	
 	log('loading stylesheets');
-	var sss = Components.classes['@mozilla.org/content/style-sheet-service;1'].getService(Components.interfaces.nsIStyleSheetService),
-		uri = Services.io.newURI('chrome://htmlruby/skin/styles/htmlruby.css', null, null);
+	sss = Components.classes['@mozilla.org/content/style-sheet-service;1'].getService(Components.interfaces.nsIStyleSheetService);
+	uri = Services.io.newURI('chrome://htmlruby/skin/styles/htmlruby.css', null, null);
 	if (!sss.sheetRegistered(uri, sss.USER_SHEET)) {
 		sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
 	}

@@ -1,4 +1,4 @@
-const VERSION = '7.1.0-beta2';
+const VERSION = '7.1.0-beta4';
 const PREFS_ROOT = 'extensions.HTMLRuby.';
 const DEBUG = false;
 const Ci = Components.interfaces;
@@ -39,10 +39,11 @@ Cu.import("resource://gre/modules/PopupNotifications.jsm");
 		request.send(null);
 	};
 	global.log = function(message) {
-		if (DEBUG) {
-			var d = new Date();
-			Services.console.logStringMessage('HTML Ruby: ' + message + ' [' + String(d.getTime()).substr(-6, 6) + ']');
-		}
+		if (!DEBUG)
+			return;
+			
+		var d = new Date();
+		Services.console.logStringMessage('HTML Ruby: ' + message + ' [' + String(d.getTime()).substr(-6, 6) + ']');
 	};
 	global.setString = function(path) {
 		log('loading stringbundle [' + path + ']');
