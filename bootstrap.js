@@ -1,4 +1,4 @@
-const VERSION = '7.1.0-beta4';
+const VERSION = '7.1.0-beta5';
 const PREFS_ROOT = 'extensions.HTMLRuby.';
 const DEBUG = false;
 const Ci = Components.interfaces;

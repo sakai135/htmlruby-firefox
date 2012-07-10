@@ -28,6 +28,7 @@ rp,rtc+rtc{
 }
 rt{
 	font-size:1em!important;
+	position:static!important;
 }
 rtc,ruby>rt{
 	font-size:.55em!important;
