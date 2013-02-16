@@ -32,7 +32,7 @@ rt{
 }
 rtc,ruby>rt{
 	font-size:.55em!important;
-	-moz-transform:translateY(-1em)!important;
+	transform:translateY(-1em)!important;
 }
 ruby{
 	display:-moz-inline-stack!important;

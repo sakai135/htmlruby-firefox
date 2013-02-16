@@ -27,7 +27,7 @@ var Preferences = {
 	},
 	register: function() {
 		var branch = Services.prefs.getBranch(PREFS_ROOT);
-		branch.QueryInterface(Ci.nsIPrefBranch2);
+		branch.QueryInterface(Ci.nsIPrefBranch);
 		branch.addObserver("", this, false);
 		this._branch = branch;
 		this._SSService = Cc['@mozilla.org/content/style-sheet-service;1'].getService(Ci.nsIStyleSheetService);
