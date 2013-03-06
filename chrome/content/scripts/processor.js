@@ -10,9 +10,30 @@ var getProcessor = function(param) {
 		queue = [],
 		timeout,
 		mystatus,
-		timeoutDynamic,
+		mutationObserver = new window.MutationObserver(function(mutations) {
+			var i, node;
+			mutations.forEach(function(mutation) {
+				if (mutation.type === 'childList' && mutation.addedNodes) {
+					for (i=0; i<mutation.addedNodes.length; i++) {
+						node = mutation.addedNodes[i];
+						if (node.nodeType === window.Node.ELEMENT_NODE && (node.nodeName.toLowerCase() === 'ruby' || node.querySelector('ruby'))) {
+							log('observer found inserted ruby');
+							flush();
+							return;
+						}
+					}
+				}
+			});
+		}),
+		mutationObserverOptions = {
+			childList: true,
+			attributes: false,
+			characterData: false,
+			subtree: true
+		},
 		
 		// private functions
+		
 		flush = function() {
 			log('processor.flush()');
 			var rubies = body.querySelectorAll('ruby:not([htmlruby_processed])'),
@@ -36,8 +57,7 @@ var getProcessor = function(param) {
 				timeout = window.setTimeout(space, 100);
 			} else {
 				if (Preferences.processInsertedContent) {
-					window.clearTimeout(timeoutDynamic);
-					timeoutDynamic = window.setTimeout(flush, 2000);
+					mutationObserver.observe(body, mutationObserverOptions);
 				}
 			}
 		},
@@ -204,7 +224,7 @@ var getProcessor = function(param) {
 		onpause = function() {
 			log('processor.onpause()');
 			window.clearTimeout(timeout);
-			window.clearTimeout(timeoutDynamic);
+			mutationObserver.disconnect();
 		},
 		onunload = function() {
 			log('processor.onunload()');
@@ -212,14 +232,13 @@ var getProcessor = function(param) {
 				mystatus.close();
 			}
 			window.clearTimeout(timeout);
-			window.clearTimeout(timeoutDynamic);
+			mutationObserver.disconnect();
 			window.removeEventListener('pagehide', onunload, false);
 		},
 		onresume = function() {
 			log('processor.onresume()');
 			if (Preferences.processInsertedContent) {
-				window.clearTimeout(timeoutDynamic);
-				timeoutDynamic = window.setTimeout(flush, 2000);
+				mutationObserver.observe(body, mutationObserverOptions);
 			}
 			if (Preferences.spaceRubyText && queue.length > 0) {
 				timeout = window.setTimeout(space, 100);
