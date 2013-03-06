@@ -75,23 +75,12 @@ var getNotification = function(param) {
 		updateProgress = function(processed) {
 			log('notification.updateProgress()');
 			processedTotal += processed;
-		},
-		onunload = function() {
-			log('notification.onunload()');
-			if (typeof window !== 'undefined') {
-				window.removeEventListener('pagehide', onunload, false);
-			}
 		};
 	
 	// public
 	that.start = startProgress;
 	that.update = updateProgress;
 	that.close = close;
-	
-	// constructor
-	(function() {
-		window.addEventListener('pagehide', onunload, false);
-	}());
 	
 	return that;
 };
