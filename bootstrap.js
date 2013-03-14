@@ -65,9 +65,10 @@ function install(data, reason) {
 }
 
 function startup(data, reason) {
-	log('startup start');
 	Cu.import('resource://gre/modules/Services.jsm');
 	Cu.import('resource://gre/modules/PopupNotifications.jsm');
+
+	log('startup start');
 	include('chrome://htmlruby/content/bootstrap/startup.js');
 	log('startup end');
 }
@@ -78,9 +79,10 @@ function shutdown(data, reason) {
 		unloader();
 	});
 	shutdownQueue = [];
+	log('shutdown end');
+	
 	Cu.unload('resource://gre/modules/Services.jsm');
 	Cu.unload('resource://gre/modules/PopupNotifications.jsm');
-	log('shutdown end');
 }
 
 function uninstall(data, reason) {

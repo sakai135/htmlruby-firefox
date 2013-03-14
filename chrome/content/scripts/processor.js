@@ -40,10 +40,6 @@ var getProcessor = function(param) {
 				count = rubies.length;
 			if (count > 0) {
 				onpause();
-				if (!isInitialized) {
-					log('initialize immediately');
-					initialize();
-				}
 				if (typeof mystatus === 'undefined') {
 					mystatus = getNotification({
 						document: document,
@@ -256,33 +252,8 @@ var getProcessor = function(param) {
 	that.resume = onresume;
 	
 	// constructor code
-	(function() {
-		if (typeof body === 'undefined' || (window.location.protocol !== 'http:' && window.location.protocol !== 'https:' && window.location.protocol !== 'file:')) {
-			return;
-		}
-		if (!body.querySelector('ruby') || (!body.querySelector('ruby ruby') && !body.querySelector('rt rp') && !body.querySelector('rp rt'))) {
-			flush();
-		} else {
-			readAsync(document.documentURI, function(response) {
-				var	end = response.lastIndexOf('</body>');
-				if (end < 0) {
-					end = response.lastIndexOf('</BODY>');
-				}
-				if (end > 0) {
-					response = response.substring(0, end);
-				}
-				response = response.responseText.replace(/[\s\S]*<body[^<>]*>/im, '');
-				response = response.replace(/<(r[btp])(?=([^<>]*?))\2>([^<>]*)/gim, '<$1$2>$3</$1>');
-				response = response.replace(/<(?=(r[btp]))\1[^<>]*?><\/\1>/gim, '');
-				response = response.replace(/<\/(?=(r[btp]))\1><\/\1>/gim, '</$1>');
-				response = response.replace(/<ruby(?!.{1,50}<rt)/gim, '</ruby');
-				response = response.replace(/<ruby/gim, '</ruby><ruby');
-				body.innerHTML = response.replace(/<\/rt>/gim, '</rt></ruby>');
-				flush();
-			});
-		}
-		window.addEventListener('pagehide', onunload, false);
-	}());
+	flush();
+	window.addEventListener('pagehide', onunload, false);
 	
 	return that;
 };
