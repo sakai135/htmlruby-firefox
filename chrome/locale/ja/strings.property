@@ -1,5 +1,0 @@
-notification.prefix = HTML Ruby:\u0020
-notification.progress.parsing = ページ解析中
-notification.progress.complete = 完了
-notification.progress.spacing = 字間の調整 (%S%)
-notification.progress.abort = 中止する

@@ -1,0 +1,56 @@
+{
+  "name": "htmlruby",
+  "title": "HTML Ruby",
+  "id": "{e10bc159-aa26-41d8-aa24-65de9464ca5a}",
+  "description": "Adds support for rendering of ruby annotation",
+  "author": "sakai135",
+  "license": "BSD 3-Clause",
+  "version": "8.0.0-beta1",
+  "permissions": {
+    "private-browsing": true
+  },
+  "preferences": [
+    {
+      "name": "rubyTextSize",
+      "type": "string",
+      "value": ".55em",
+      "title": "Ruby text size",
+      "description": "The size of the ruby text. 1em is the same size as the base text."
+    },
+    {
+      "name": "rubyLineHeight",
+      "type": "string",
+      "value": "1em",
+      "title": "Ruby line height",
+      "description": "The space between base and ruby text. Adjust this to your preference. 1em means that the baseline of the ruby text should be just above the top of the base text."
+    },
+    {
+      "name": "adjustLineHeight",
+      "type": "bool",
+      "value": true,
+      "title": "Adjust line height",
+      "description": "If enabled, HTML Ruby will adjust the line height to make space for the ruby text. When disabled, the ruby may overlap the text above it."
+    },
+    {
+      "name": "spaceRubyText",
+      "type": "bool",
+      "value": true,
+      "title": "Space ruby text",
+      "description": "If enabled, HTML Ruby will space out the ruby and base text. When disabled, ruby and base text will be centered."
+    },
+    {
+      "name": "processInsertedContent",
+      "type": "bool",
+      "value": false,
+      "title": "Process inserted content",
+      "description": "If enabled, HTML Ruby will process dynamically inserted content by other Firefox extensions and such. Disabling will provide a slight increase in performance for pages with heavy DOM interaction."
+    },
+    {
+      "name": "debug",
+      "type": "bool",
+      "value": false,
+      "title": "debug",
+      "hidden": true
+    }
+  ]
+}

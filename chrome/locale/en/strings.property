@@ -1,5 +1,0 @@
-notification.prefix = HTML Ruby:\u0020
-notification.progress.parsing = parsing page
-notification.progress.complete = complete
-notification.progress.spacing = spacing text (%S%)
-notification.progress.abort = Abort

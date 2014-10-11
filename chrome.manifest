@@ -1,4 +1,0 @@
-content	htmlruby 			chrome/content/
-skin	htmlruby	default	chrome/skin/
-locale	htmlruby	en		chrome/locale/en/
-locale	htmlruby	ja		chrome/locale/ja/
