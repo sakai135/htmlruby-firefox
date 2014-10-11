@@ -119,7 +119,7 @@ function register() {
     for (; i<max; i++) {
       mutation = mutations[i];
       if (mutation.type === 'childList' && mutation.addedNodes && checkMutation(mutation)) {
-        flush();
+        process();
         break;
       }
     }
