@@ -101,35 +101,35 @@ function register() {
   log('processor.onResume()');
 
   function checkNode(node) {
-  return node.nodeType === Node.ELEMENT_NODE && (node.nodeName.toLowerCase() === 'ruby' || node.querySelector('ruby'));
+    return node.nodeType === Node.ELEMENT_NODE && (node.nodeName.toLowerCase() === 'ruby' || node.querySelector('ruby'));
   }
   function checkMutation(mutation) {
-  var i = 0, max = mutation.addedNodes.length, node;
-  for (; i<max; i++) {
-    node = mutation.addedNodes[i];
-    if (checkNode(node)) {
-    log('observer found inserted ruby');
-    return true;
+    var i = 0, max = mutation.addedNodes.length, node;
+    for (; i<max; i++) {
+      node = mutation.addedNodes[i];
+      if (checkNode(node)) {
+      log('observer found inserted ruby');
+      return true;
+      }
     }
-  }
-  return false;
+    return false;
   }
   function onMutations(mutations) {
-  var i = 0, max = mutations.length, mutation;
-  for (; i<max; i++) {
-    mutation = mutations[i];
-    if (mutation.type === 'childList' && mutation.addedNodes && checkMutation(mutation)) {
-    flush();
-    break;
+    var i = 0, max = mutations.length, mutation;
+    for (; i<max; i++) {
+      mutation = mutations[i];
+      if (mutation.type === 'childList' && mutation.addedNodes && checkMutation(mutation)) {
+        flush();
+        break;
+      }
     }
-  }
   }
 
   observer = new MutationObserver(onMutations);
   observer.observe(document.body, {
-  childList: true,
-  attributes: false,
-  characterData: false,
-  subtree: true
+    childList: true,
+    attributes: false,
+    characterData: false,
+    subtree: true
   });
 }
