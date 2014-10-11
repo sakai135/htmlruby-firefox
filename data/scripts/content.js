@@ -1,4 +1,8 @@
-log('content.js');
+log(self.options);
 
-var processor = new Processor(self.options);
-processor.start();
+if (self.options.spaceRubyText) {
+  process();
+  if (self.options.processInsertedContent) {
+    register();
+  }
+}
