@@ -64,7 +64,7 @@ function process() {
     } else {
       perChar = (rtw - rbw) / rbl;
 
-      ruby.style.width = rtw + 'px';
+      ruby.style.maxWidth = rtw + 'px';
       ruby.style.letterSpacing = perChar + 'px';
       ruby.style.textIndent = perChar / 2 + 'px';
     }
