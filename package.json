@@ -5,7 +5,7 @@
   "description": "Adds support for rendering of ruby annotation",
   "author": "sakai135",
   "license": "BSD 3-Clause",
-  "version": "8.0.0-beta3",
+  "version": "8.0.0-beta4",
   "permissions": {
     "private-browsing": true
   },
@@ -44,13 +44,6 @@
       "value": false,
       "title": "Process inserted content",
       "description": "If enabled, HTML Ruby will process dynamically inserted content by other Firefox extensions and such. Disabling will provide a slight increase in performance for pages with heavy DOM interaction."
-    },
-    {
-      "name": "debug",
-      "type": "bool",
-      "value": false,
-      "title": "debug",
-      "hidden": true
     }
   ]
 }

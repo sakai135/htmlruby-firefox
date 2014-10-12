@@ -1,19 +1,26 @@
-log('processor.js');
+"use strict";
+
+console.log('processor.js');
+
+var observer;
 
 function process() {
-  log('processor.process()');
+  console.log('process() start');
 
   var rubies = document.body.querySelectorAll('ruby:not([hr-processed])');
 
   if (rubies.length < 1) {
+    console.log('process() end');
     return;
   }
 
+  stopObserver();
+
   var dataset = new Array(rubies.length);
   var multi = [];
-  var ruby, i, j, rts, rbw, rbl, rt, rtw, rtl, perChar, rpl, rps;
+  var ruby, i, j, rts, rbw, rbl, rt, rtw, rtl, perChar, rpl, rps, data;
 
-  log('found rubies, starting collection');
+  console.log('found rubies, starting collection');
 
   for (i = rubies.length; i--;) {
     ruby = rubies[i];
@@ -42,7 +49,7 @@ function process() {
     dataset[i] = [rtw, rtl, rbw, rbl - rtl - rpl, rts];
   }
 
-  log('collection done, starting spacing');
+  console.log('collection done, starting spacing');
 
   for (i = rubies.length; i--;) {
     ruby = rubies[i];
@@ -70,7 +77,7 @@ function process() {
     }
   }
 
-  log('spacing done, correcting multi');
+  console.log('spacing done, correcting multi');
 
   rtw = new Array(multi.length);
   for (i = multi.length; i--;) {
@@ -91,32 +98,38 @@ function process() {
     }
   }
 
-  log('correcting multi done');
+  console.log('correcting multi done');
 
   for (i = rubies.length; i--;) {
     rubies[i].setAttribute('hr-processed', 1);
   }
+
+  startObserver();
+
+  console.log('process() end');
 }
+
 function register() {
-  log('processor.onResume()');
+  console.log('register() start');
 
   function checkNode(node) {
-    return node.nodeType === Node.ELEMENT_NODE && (node.nodeName.toLowerCase() === 'ruby' || node.querySelector('ruby'));
+    return node.nodeType === Node.ELEMENT_NODE &&
+      (node.nodeName.toLowerCase() === 'ruby' || node.querySelector('ruby')) &&
+      node.querySelector('rt');
   }
   function checkMutation(mutation) {
-    var i = 0, max = mutation.addedNodes.length, node;
-    for (; i<max; i++) {
-      node = mutation.addedNodes[i];
-      if (checkNode(node)) {
-      log('observer found inserted ruby');
-      return true;
+    var i;
+    for (i = mutation.addedNodes.length; i--;) {
+      if (checkNode(mutation.addedNodes[i])) {
+        console.log('observer found inserted ruby');
+        return true;
       }
     }
     return false;
   }
   function onMutations(mutations) {
-    var i = 0, max = mutations.length, mutation;
-    for (; i<max; i++) {
+    var i, mutation;
+    for (i = mutations.length; i--;) {
       mutation = mutations[i];
       if (mutation.type === 'childList' && mutation.addedNodes && checkMutation(mutation)) {
         process();
@@ -126,10 +139,32 @@ function register() {
   }
 
   observer = new MutationObserver(onMutations);
-  observer.observe(document.body, {
-    childList: true,
-    attributes: false,
-    characterData: false,
-    subtree: true
-  });
+  startObserver();
+
+  console.log('register() end');
+}
+
+function startObserver() {
+  if (observer) {
+    console.log('starting observer');
+
+    observer.observe(document.body, {
+      childList: true,
+      attributes: false,
+      characterData: false,
+      subtree: true
+    });
+
+    console.log('started observer');
+  }
+}
+
+function stopObserver() {
+  if (observer) {
+    console.log('stopping observer');
+
+    observer.disconnect();
+
+    console.log('stopped observer');
+  }
 }
