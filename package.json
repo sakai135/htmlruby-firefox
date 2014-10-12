@@ -4,6 +4,7 @@
   "id": "{e10bc159-aa26-41d8-aa24-65de9464ca5a}",
   "description": "Adds support for rendering of ruby annotation",
   "author": "sakai135",
+  "homepage": "https://github.com/sakai135/htmlruby-firefox",
   "license": "BSD 3-Clause",
   "version": "8.0.0-beta5",
   "permissions": {
