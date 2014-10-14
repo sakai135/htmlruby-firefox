@@ -1,6 +1,6 @@
 "use strict";
 
-console.log(self.options);
+console.info(self.options);
 
 if (self.options.spaceRubyText) {
   process();

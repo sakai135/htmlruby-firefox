@@ -1,15 +1,14 @@
 "use strict";
 
-console.log('processor.js');
-
 var observer;
 
 function process() {
   console.log('process() start');
 
   var rubies = document.body.querySelectorAll('ruby:not([hr-processed])');
+  var rubyCount = rubies.length;
 
-  if (rubies.length < 1) {
+  if (rubyCount < 1) {
     console.log('process() end');
     return;
   }
@@ -18,11 +17,11 @@ function process() {
 
   var dataset = new Array(rubies.length);
   var multi = [];
-  var ruby, i, j, rts, rbw, rbl, rt, rtw, rtl, perChar, rpl, rps, data;
+  var ruby, i, j, rts, rbw, rbl, rt, rtw, rtl, data, perChar, rps, rpl, iMax, jMax;
 
-  console.log('found rubies, starting collection');
+  console.log('collect');
 
-  for (i = rubies.length; i--;) {
+  for (i = 0; i < rubyCount; i++) {
     ruby = rubies[i];
     rbw = ruby.clientWidth;
     rbl = ruby.textContent.trim().length;
@@ -31,7 +30,7 @@ function process() {
       multi.push(i);
       rtw = 0;
       rtl = 0;
-      for (j = rts.length; j--;) {
+      for (j = 0, jMax = rts.length; j < jMax; j++) {
         rt = rts[j];
         rtw += rt.clientWidth;
         rtl += rt.textContent.trim().length;
@@ -43,15 +42,15 @@ function process() {
     }
     rpl = 0;
     rps = ruby.querySelectorAll('rp');
-    for (j = rps.length; j--;) {
+    for (j = 0, jMax = rps.length; j < jMax; j++) {
       rpl += rps[j].textContent.trim().length;
     } 
     dataset[i] = [rtw, rtl, rbw, rbl - rtl - rpl, rts];
   }
 
-  console.log('collection done, starting spacing');
+  console.log('space');
 
-  for (i = rubies.length; i--;) {
+  for (i = 0; i < rubyCount; i++) {
     ruby = rubies[i];
     data = dataset[i];
     rtw = data[0];
@@ -63,10 +62,10 @@ function process() {
       perChar = (rbw - rtw) / rtl;
 
       ruby.style.maxWidth = rbw + 'px';
-      for (j = rts.length; j--;) {
+      for (j = 0, jMax = rts.length; j < jMax; j++) {
         rt = rts[j];
         rt.style.letterSpacing = perChar + 'px';
-        rt.style.right = -(j > 0 ? perChar : (perChar / 2)) + 'px';
+        rt.style.left = (j > 0 ? perChar : (perChar / 2)) + 'px';
       }
     } else {
       perChar = (rtw - rbw) / rbl;
@@ -77,30 +76,30 @@ function process() {
     }
   }
 
-  console.log('spacing done, correcting multi');
+  console.log('multi');
 
   rtw = new Array(multi.length);
-  for (i = multi.length; i--;) {
+  for (i = 0, iMax = multi.length; i < iMax; i++) {
     rts = dataset[multi[i]][4];
     rtl = new Array(rts.length);
     rbw = 0;
-    for (j = rts.length; j--;) {
+    for (j = 0, jMax = rts.length; j < jMax; j++) {
       rtl[j] = rbw;
       rbw += rts[j].clientWidth;
     }
     rtw[i] = rtl;
   }
-  for (i = multi.length; i--;) {
+  for (i = 0, iMax = multi.length; i < iMax; i++) {
     rts = dataset[multi[i]][4];
     rtl = rtw[i];
-    for (j = rts.length; j--;) {
+    for (j = 0, jMax = rts.length; j < jMax; j++) {
       rts[j].style.marginRight = rtl[j] + 'px';
     }
   }
 
-  console.log('correcting multi done');
+  console.log('mark');
 
-  for (i = rubies.length; i--;) {
+  for (i = 0; i < rubyCount; i++) {
     rubies[i].setAttribute('hr-processed', 1);
   }
 

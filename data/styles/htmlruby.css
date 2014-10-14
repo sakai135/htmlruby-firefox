@@ -6,9 +6,8 @@ ruby, rbc, rtc, rb, rt {
     vertical-align: baseline !important;
     text-align: center !important;
     top: auto !important;
-    left: auto !important;
+    right: auto !important;
     bottom: auto !important;
-    text-decoration: none !important;
     white-space: nowrap !important;
     border-style: none !important;
     overflow: visible !important;
@@ -17,8 +16,12 @@ ruby, rbc, rtc, rb, rt {
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
+rt, rtc {
+    text-decoration: none !important;
+    text-indent: 0px !important;
+}
 ruby, rbc, rtc, rb {
-    right: auto !important;
+    left: auto !important;
 }
 ruby {
     position: relative !important;
@@ -37,7 +40,7 @@ rt, rt + rtc, rtc + rtc {
     transform: translateY(-1em) !important;
     line-height: 1em !important;
     letter-spacing: 0px;
-    right: 0px;
+    left: 0px;
 }
 rp {
     display: none !important;
