@@ -63,6 +63,5 @@ rt + rp + rtc rt,
 rtc + rtc rt,
 rtc + rp + rtc rt {
     font-size: 1em !important;
-    position: absolute !important;
     transform: none !important;
 }
