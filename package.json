@@ -6,24 +6,24 @@
   "author": "sakai135",
   "homepage": "https://github.com/sakai135/htmlruby-firefox",
   "license": "BSD 3-Clause",
-  "version": "8.0.0-beta6",
+  "version": "8.0.0-beta7",
   "permissions": {
     "private-browsing": true
   },
   "preferences": [
     {
       "name": "rubyTextSize",
-      "type": "string",
-      "value": ".55em",
+      "type": "integer",
+      "value": "55",
       "title": "Ruby text size",
-      "description": "The size of the ruby text. 1em is the same size as the base text."
+      "description": "The size of the ruby text. 100 is the same size as the base text. Default is 55."
     },
     {
       "name": "rubyLineHeight",
-      "type": "string",
-      "value": "1em",
+      "type": "integer",
+      "value": "100",
       "title": "Ruby line height",
-      "description": "The space between base and ruby text. Adjust this to your preference. 1em means that the baseline of the ruby text should be just above the top of the base text."
+      "description": "The space between base and ruby text. Adjust this to your preference. 100 means that the baseline of the ruby text should be just above the top of the base text. Default is 100."
     },
     {
       "name": "adjustLineHeight",
