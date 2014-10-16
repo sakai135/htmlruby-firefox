@@ -1,14 +1,17 @@
 ruby,
-rbc,
-rtc,
-rb,
-rt {
+ruby > rbc,
+ruby > rtc,
+ruby rb,
+ruby > rb,
+ruby > rbc > rb
+ruby rt,
+ruby > rt,
+ruby > rtc > rt {
     display: inline-block !important;
     margin-top: 0px !important;
     margin-right: 0px !important;
     margin-bottom: 0px !important;
     padding: 0px !important;
-    width: auto !important;
     height: auto !important;
     top: auto !important;
     right: auto !important;
@@ -24,16 +27,27 @@ rt {
     transform: none !important;
     position: static !important;
 }
-rt,
-rtc {
+ruby rt,
+ruby > rt,
+ruby > rtc > rt,
+ruby > rtc {
     text-decoration: none !important;
-    text-indent: 0px !important;
 }
 ruby,
-rbc,
-rtc,
-rb {
+ruby > rbc,
+ruby > rtc,
+ruby rb,
+ruby > rb,
+ruby > rbc > rb {
     margin-left: 0px !important;
+}
+ruby > rbc,
+ruby > rtc,
+ruby rb,
+ruby > rb,
+ruby > rbc > rb {
+    width: auto !important;
+    text-indent: 0px !important;
 }
 ruby {
     position: relative !important;
@@ -45,23 +59,23 @@ ruby {
     text-indent: 0px;
     letter-spacing: 0px;
 }
-rp {
+ruby rp,
+ruby > rp {
     display: none !important;
 }
-rt,
-rtc {
+ruby rt,
+ruby > rt,
+ruby > rtc > rt,
+ruby > rtc {
     position: absolute !important;
     left: 0px !important;
     margin-left: 0px;
     font-size: .55em !important;
     line-height: 1em !important;
     letter-spacing: 0px;
+    text-indent: 0px;
 }
-rtc rt,
-rt + rtc rt,
-rt + rp + rtc rt,
-rtc + rtc rt,
-rtc + rp + rtc rt {
+ruby > rtc > rt {
     font-size: 1em !important;
     transform: none !important;
 }
