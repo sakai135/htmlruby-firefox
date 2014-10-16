@@ -1,8 +1,9 @@
 'use strict';
 
+var prefs = self.options;
 var observer;
 
-function process(prefs) {
+function process() {
   console.log('process() start');
 
   var rubySelector = prefs.processInsertedContent ? 'ruby:not([hr-processed])' : 'ruby';
@@ -14,9 +15,7 @@ function process(prefs) {
     return;
   }
 
-  if (prefs.processInsertedContent) {
-    stopObserver();
-  }
+  stopObserver();
 
   var isSegmented = !!document.body.querySelector(rubySelector + ' rt + rt');
   var isMulti = !!document.body.querySelector(rubySelector + ' rtc:nth-of-type(2)');
@@ -53,7 +52,32 @@ function process(prefs) {
 
     for (let j = 1, jMax = rtCount; j < jMax; j++) {
       rt = rtElems[j];
-      if (rt.previousElementSibling === null || rt.previousElementSibling.nodeName.toLowerCase() !== 'rt') {
+      let isFirstChild = rt.previousElementSibling === null; 
+      let hasPrevText = false;
+      let isPrevElementRt = false;
+      let prevNode = rt.previousSibling;
+      let isParentRtc = rt.parentNode.nodeName.toLowerCase() === 'rtc';
+      let hasRp;
+      while (prevNode !== null) {
+        let nodeName = prevNode.nodeName.toLowerCase();
+        if (nodeName === 'rt') {
+          isPrevElementRt = true;
+          break;
+        }
+        if (nodeName === 'rb' || (nodeName === '#text' && prevNode.textContent.trim().length > 0)) {
+          hasPrevText = true;
+          break;
+        }
+        if (isParentRtc && prevNode.nodeType === Node.ELEMENT_NODE) {
+          break;
+        }
+        if (nodeName === 'rp') {
+          hasRp = true;
+        }
+        prevNode = prevNode.previousSibling;
+      }
+
+      if (isFirstChild || (!hasPrevText && hasRp && !isParentRtc && isPrevElementRt)) {
         rtChars += gChars;
         groups.push([gWidth, gChars, gElems]);
         gWidth = 0;
@@ -170,9 +194,9 @@ function process(prefs) {
     for (let i = 0; i < rubyCount; i++) {
       rubies[i].setAttribute('hr-processed', 1);
     }
-
-    startObserver();
   }
+
+  startObserver();
 
   console.log('process() end');
 }
@@ -207,36 +231,35 @@ function register() {
   }
 
   observer = new MutationObserver(onMutations);
+  startObserver();
 
   console.log('register() end');
 }
 
 function startObserver() {
-  if (!observer) {
-    register();    
+  if (observer) {
+    console.log('starting observer');
+    observer.observe(document.body, {
+      childList: true,
+      attributes: false,
+      characterData: false,
+      subtree: true
+    });
+    console.log('started observer');
   }
-
-  console.log('starting observer');
-
-  observer.observe(document.body, {
-    childList: true,
-    attributes: false,
-    characterData: false,
-    subtree: true
-  });
-
-  console.log('started observer');
 }
 
 function stopObserver() {
   if (observer) {
     console.log('stopping observer');
-
     observer.disconnect();
-
     console.log('stopped observer');
   }
 }
 
-console.info(self.options);
-process(self.options);
+console.info(prefs);
+
+process();
+if (self.options.processInsertedContent) {
+  register();
+}
