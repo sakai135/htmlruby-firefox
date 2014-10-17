@@ -17,7 +17,7 @@ function process() {
 
   stopObserver();
 
-  var isSegmented = !!document.body.querySelector(rubySelector + ' rt + rt');
+  var isSegmented = !!document.body.querySelector(rubySelector + ' rt:nth-of-type(2)');
   var isMulti = !!document.body.querySelector(rubySelector + ' rtc:nth-of-type(2)');
   var dataset = [];
 
@@ -52,7 +52,7 @@ function process() {
 
     for (let j = 1, jMax = rtCount; j < jMax; j++) {
       rt = rtElems[j];
-      let isFirstChild = rt.previousElementSibling === null; 
+      let isFirstChild = rt.previousElementSibling === null;
       let hasPrevText = false;
       let isPrevElementRt = false;
       let prevNode = rt.previousSibling;
@@ -79,7 +79,7 @@ function process() {
 
       if (isFirstChild || (!hasPrevText && hasRp && !isParentRtc && isPrevElementRt)) {
         rtChars += gChars;
-        groups.push([gWidth, gChars, gElems]);
+        groups.push([gWidth, gChars, gElems, 0]);
         gWidth = 0;
         gChars = 0;
         gElems = [];
@@ -89,7 +89,7 @@ function process() {
       gElems.push([rt, 0]);
     }
     rtChars += gChars;
-    groups.push([gWidth, gChars, gElems]);
+    groups.push([gWidth, gChars, gElems, 0]);
 
     for (let j = 0, jMax = rpElems.length; j < jMax; j++) {
       rpChars += rpElems[j].textContent.trim().length;
@@ -97,7 +97,7 @@ function process() {
 
     dataset.push([rbWidth, rubyChars - rtChars - rpChars, groups]);
   }
-  
+
   if (prefs.spaceRubyText) {
     console.log('space');
 
@@ -134,13 +134,14 @@ function process() {
         let group = groups[j];
         let gWidth = group[0];
         let gChars = group[1];
-        
+
         if (maxWidth > gWidth) {
           let gElems = group[2];
           if (gChars === 1) {
             gElems[0][0].style.width = maxWidth + 'px';
           } else {
             let perChar = (maxWidth - gWidth) / gChars;
+            group[3] = perChar;
 
             for (let k = 0, kMax = gElems.length; k < kMax; k++) {
               let rt = gElems[k][0];
@@ -164,11 +165,13 @@ function process() {
         let group = groups[j];
         let gElems = group[2];
         let offset = 0;
+        let indent = group[3] / 2;
 
         for (let k = 0, kMax = gElems.length; k < kMax; k++) {
           let elem = gElems[k];
+          let eWidth = elem[0].clientWidth;
           elem[1] = offset;
-          offset += elem[0].clientWidth;
+          offset += eWidth - (eWidth === 0 ? 0 : indent);
         }
       }
     }
