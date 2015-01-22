@@ -6,7 +6,7 @@
   "author": "sakai135",
   "homepage": "https://github.com/sakai135/htmlruby-firefox",
   "license": "BSD 3-Clause",
-  "version": "8.0.0-beta10",
+  "version": "8.0.0-beta11",
   "permissions": {
     "private-browsing": true
   },
