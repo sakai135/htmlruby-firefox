@@ -1,3 +1,7 @@
+**Since [Firefox 38 will be implementing ruby annotation support](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ruby), there won't be anymore updates on HTML Ruby.** Firefox will be the last of the major browsers to implement ruby annotation, but it looks like Firefox will have the best and most complete implementation yet. 
+
+Thank you to all HTML Ruby users during the past almost 7 years since I first published it. Special thanks to those that helped develop HTML Ruby by testing, submitting bugs, and suggesting improvements.
+
 HTML Ruby for Firefox
 ================
 
